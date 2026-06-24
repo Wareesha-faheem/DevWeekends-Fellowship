@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Number Guessing Game</title>
+</head>
+<body>
+    <input type="number" name="num" id="num">
+    <button type="submit" id="submit">Submit Guess</button>
+    <p id="ornum"></p>
+    <p id="guess"></p>
+    <p id="output"></p>
+</body>
+<script>
+let min = 1;
+let max = 100;
+let guesses=10;
+let mynum = Math.floor(Math.random() * (max - min + 1)) + min;
+document.getElementById("ornum").innerHTML=mynum
+
+document.getElementById("submit").addEventListener("click", function() {
+    let ui=Number(document.getElementById("num").value)
+    if(guesses>1){
+        if(ui===mynum){
+            document.getElementById("guess").innerHTML=""
+            document.getElementById("output").innerHTML="Correct Number \n Game Restarting!"
+            setTimeout(function() {
+                location.reload();
+            }, 2000);
+        }
+        else{
+            --guesses;
+            document.getElementById("guess").innerHTML=`Guesses Remaining: ${guesses}`
+            document.getElementById("output").innerHTML="Incorrect Number"
+        }
+    }
+    else{
+        --guesses;
+        document.getElementById("guess").innerHTML=`Guesses Remaining: ${guesses}`
+        document.getElementById("output").innerHTML="You Lose! \n Game Restarting"
+            setTimeout(function() {
+                location.reload();
+            }, 2000);
+    }
+}
+)
+</script>
+</html>

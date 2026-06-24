@@ -1,0 +1,287 @@
+/* ===========================================
+   To-Do List — "Notebook" theme
+   Paper, pencil, and a little highlighter.
+=========================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,500;0,600;0,700;1,500&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+
+:root {
+    --paper: #f7f3ec;
+    --paper-edge: #ece5d6;
+    --ink: #22241f;
+    --graphite: #5b5a52;
+    --graphite-soft: #9b988c;
+    --red: #c1473b;
+    --highlight: #e8c547;
+    --line: #d9d2c0;
+    --shadow: rgba(34, 36, 31, 0.18);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    background: var(--paper-edge);
+    background-image:
+        radial-gradient(circle at 1px 1px, rgba(34,36,31,0.05) 1px, transparent 0);
+    background-size: 22px 22px;
+    color: var(--ink);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 32px 16px;
+}
+
+.desk {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+/* ---------- Card ---------- */
+
+.card {
+    position: relative;
+    width: 100%;
+    max-width: 460px;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 38px 32px 28px;
+    box-shadow:
+        0 1px 0 rgba(255,255,255,0.6) inset,
+        0 18px 40px -12px var(--shadow);
+    transform: rotate(-0.4deg);
+}
+
+.card__tape {
+    position: absolute;
+    top: -14px;
+    left: 50%;
+    transform: translateX(-50%) rotate(-2deg);
+    width: 90px;
+    height: 28px;
+    background: rgba(232, 197, 71, 0.55);
+    border: 1px solid rgba(34,36,31,0.08);
+    box-shadow: 0 2px 6px rgba(34,36,31,0.12);
+}
+
+h1 {
+    font-family: 'Lora', serif;
+    font-weight: 700;
+    font-size: 28px;
+    letter-spacing: -0.01em;
+    margin: 4px 0 2px;
+    text-align: center;
+    color: var(--ink);
+}
+
+.subtitle {
+    text-align: center;
+    margin: 0 0 26px;
+    font-size: 12.5px;
+    color: var(--graphite-soft);
+    font-style: italic;
+    font-family: 'Lora', serif;
+}
+
+/* ---------- Input row ---------- */
+
+.input-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 26px;
+}
+
+#todo {
+    flex: 1;
+    min-width: 0;
+    font-family: inherit;
+    font-size: 14px;
+    padding: 12px 14px;
+    border: 1.5px solid var(--ink);
+    border-radius: 3px;
+    background: #fffdf8;
+    color: var(--ink);
+    outline: none;
+    transition: box-shadow 0.15s ease, transform 0.15s ease;
+}
+
+#todo::placeholder {
+    color: var(--graphite-soft);
+}
+
+#todo:focus {
+    box-shadow: 3px 3px 0 var(--ink);
+    transform: translate(-1px, -1px);
+}
+
+#add {
+    font-family: 'Lora', serif;
+    font-weight: 600;
+    font-size: 14px;
+    padding: 12px 20px;
+    background: var(--ink);
+    color: var(--paper);
+    border: 1.5px solid var(--ink);
+    border-radius: 3px;
+    cursor: pointer;
+    text-transform: lowercase;
+    transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.15s ease;
+}
+
+#add:hover {
+    background: var(--red);
+    border-color: var(--red);
+}
+
+#add:active {
+    transform: translateY(1px);
+}
+
+/* ---------- Task list ----------
+   JS renders flat siblings per task:
+   <li>title</li> <button class="edit">Edit</button><button class="delete">Delete</button>
+   No wrapping element exists around each trio, so we style
+   li and the buttons that follow it directly, with the UL
+   as a flex-wrap container that visually re-groups each row.
+*/
+
+.task-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0;
+}
+
+.task-list:empty::before {
+    content: "nothing on the list yet — add your first task above.";
+    display: block;
+    width: 100%;
+    font-family: 'Lora', serif;
+    font-style: italic;
+    font-size: 13px;
+    color: var(--graphite-soft);
+    padding: 18px 4px;
+    text-align: center;
+    border-top: 1px dashed var(--line);
+}
+
+.task-list li {
+    flex: 1 1 100%;
+    list-style: none;
+    font-size: 14.5px;
+    color: var(--ink);
+    padding: 13px 4px 13px 30px;
+    border-top: 1px dashed var(--line);
+    position: relative;
+    word-break: break-word;
+    line-height: 1.4;
+}
+
+/* hand-drawn-ish checkbox square before each task */
+.task-list li::before {
+    content: "";
+    position: absolute;
+    left: 4px;
+    top: 50%;
+    transform: translateY(-50%) rotate(-3deg);
+    width: 14px;
+    height: 14px;
+    border: 1.5px solid var(--graphite);
+    border-radius: 2px;
+}
+
+.task-list button {
+    flex: 0 0 auto;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    padding: 7px 12px;
+    margin: 8px 0 8px 6px;
+    border-radius: 3px;
+    cursor: pointer;
+    border: 1.5px solid transparent;
+    transition: transform 0.12s ease, background 0.15s ease, border-color 0.15s ease;
+}
+
+/* last button in each visual row gets right margin to breathe before wrap */
+.task-list button.delete {
+    margin-right: 0;
+}
+
+.task-list button.edit {
+    background: transparent;
+    color: var(--graphite);
+    border-color: var(--line);
+}
+
+.task-list button.edit:hover {
+    border-color: var(--highlight);
+    background: rgba(232, 197, 71, 0.18);
+    color: var(--ink);
+}
+
+.task-list button.delete {
+    background: transparent;
+    color: var(--red);
+    border-color: var(--line);
+}
+
+.task-list button.delete:hover {
+    background: var(--red);
+    border-color: var(--red);
+    color: var(--paper);
+}
+
+.task-list button:active {
+    transform: translateY(1px);
+}
+
+/* ---------- Responsive ---------- */
+
+@media (max-width: 480px) {
+    .card {
+        padding: 30px 20px 22px;
+    }
+
+    .input-row {
+        flex-direction: column;
+    }
+
+    #add {
+        width: 100%;
+    }
+
+    .task-list li {
+        flex: 1 1 100%;
+    }
+
+    .task-list button {
+        margin-left: 0;
+        margin-right: 6px;
+    }
+}
+
+/* ---------- Accessibility ---------- */
+
+button:focus-visible,
+input:focus-visible {
+    outline: 2px solid var(--red);
+    outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    * {
+        transition: none !important;
+    }
+}

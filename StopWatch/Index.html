@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stopwatch</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@500;600&display=swap');
+
+        :root {
+            --bg: #15171a;
+            --dial: #1d2024;
+            --dial-edge: #2a2e33;
+            --ring: #34383e;
+            --amber: #e8a23d;
+            --amber-dim: #5a4326;
+            --red: #c4574a;
+            --red-dim: #4a2a26;
+            --text: #ece9e2;
+            --muted: #6f757c;
+        }
+
+        * { box-sizing: border-box; }
+
+        html, body {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            min-height: 100vh;
+            background: var(--bg);
+            background-image: radial-gradient(circle at 50% 30%, rgba(232,162,61,0.06), transparent 55%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Inter', system-ui, sans-serif;
+            padding: 40px 20px;
+        }
+
+        .unit {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 34px;
+        }
+
+        .label {
+            font-size: 11px;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            color: var(--muted);
+            font-weight: 600;
+        }
+
+        .dial {
+            width: 260px;
+            height: 260px;
+            border-radius: 50%;
+            background: var(--dial);
+            border: 1px solid var(--dial-edge);
+            box-shadow:
+                0 0 0 6px rgba(255,255,255,0.015),
+                0 0 0 7px var(--ring),
+                inset 0 2px 14px rgba(0,0,0,0.5),
+                0 25px 60px -20px rgba(0,0,0,0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        /* tick marks around the dial */
+        .dial::before {
+            content: "";
+            position: absolute;
+            inset: 14px;
+            border-radius: 50%;
+            background:
+                repeating-conic-gradient(
+                    var(--dial-edge) 0deg 1.2deg,
+                    transparent 1.2deg 30deg
+                );
+            -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 9px), #000 calc(100% - 8px));
+            mask: radial-gradient(farthest-side, transparent calc(100% - 9px), #000 calc(100% - 8px));
+            opacity: 0.7;
+        }
+
+        #num {
+            margin: 0;
+            font-family: 'JetBrains Mono', monospace;
+            font-variant-numeric: tabular-nums;
+            font-weight: 500;
+            font-size: 52px;
+            color: var(--text);
+            letter-spacing: 0.02em;
+            z-index: 1;
+            text-align: center;
+            line-height: 1.15;
+        }
+
+        #num:empty::before {
+            content: "0";
+            color: var(--muted);
+        }
+
+        #num br + * ,
+        #num {
+            /* keep the "Timer Stopped!" line readable when appended */
+        }
+
+        .controls {
+            display: flex;
+            gap: 14px;
+        }
+
+        button {
+            font-family: 'Inter', sans-serif;
+            font-size: 13.5px;
+            font-weight: 600;
+            letter-spacing: 0.03em;
+            padding: 13px 30px;
+            border-radius: 999px;
+            border: 1.5px solid transparent;
+            cursor: pointer;
+            transition: transform 0.1s ease, filter 0.15s ease, box-shadow 0.15s ease;
+        }
+
+        button:active { transform: scale(0.96); }
+
+        #start {
+            background: var(--amber);
+            color: #221a0c;
+            box-shadow: 0 8px 20px -8px rgba(232,162,61,0.55);
+        }
+        #start:hover { filter: brightness(1.08); }
+        #start:focus-visible { outline: 3px solid var(--amber-dim); outline-offset: 3px; }
+
+        #stop {
+            background: transparent;
+            border-color: var(--red);
+            color: var(--red);
+        }
+        #stop:hover { background: rgba(196,87,74,0.12); }
+        #stop:focus-visible { outline: 3px solid var(--red-dim); outline-offset: 3px; }
+
+        .hint {
+            font-size: 12px;
+            color: var(--muted);
+            max-width: 240px;
+            text-align: center;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+<body>
+    <div class="unit">
+        <p class="label">Stopwatch</p>
+
+        <div class="dial">
+            <!-- <input type="number" name="Max" id="max"> -->
+            <p id="num"></p>
+        </div>
+
+        <div class="controls">
+            <button type="submit" id="start" onclick="run()">Start</button>
+            <button type="submit" id="stop" onclick="stop()">Stop</button>
+        </div>
+
+        <p class="hint">Counts seconds elapsed since Start. Press Stop to end the timer.</p>
+    </div>
+</body>
+<script src="script.js"></script>
+
+</html>

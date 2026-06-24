@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BMI Calculator</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500..700&family=Inter:wght@400;500;600;700&display=swap');
+
+        :root {
+            --ink: #1b2b27;
+            --paper: #f6f3ec;
+            --card: #ffffff;
+            --teal: #1f5f55;
+            --teal-soft: #e6efec;
+            --line: #ddd6c4;
+            --muted: #6b7570;
+
+            --c-under: #4a7fc9;
+            --c-healthy: #2f8f5b;
+            --c-over: #d99a2b;
+            --c-obese: #c4503a;
+        }
+
+        * { box-sizing: border-box; }
+
+        html, body {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background: var(--paper);
+            background-image:
+                radial-gradient(circle at 15% 10%, rgba(31,95,85,0.05), transparent 40%),
+                radial-gradient(circle at 85% 90%, rgba(31,95,85,0.05), transparent 40%);
+            color: var(--ink);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+
+        .sheet {
+            width: 100%;
+            max-width: 460px;
+        }
+
+        .eyebrow {
+            font-size: 11px;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--teal);
+            font-weight: 600;
+            margin: 0 0 6px 2px;
+        }
+
+        h1 {
+            font-family: 'Fraunces', serif;
+            font-weight: 600;
+            font-size: 30px;
+            margin: 0 0 22px 2px;
+            letter-spacing: -0.01em;
+        }
+
+        .card {
+            background: var(--card);
+            border: 1px solid var(--line);
+            border-radius: 18px;
+            padding: 30px 28px;
+            box-shadow: 0 1px 2px rgba(27,43,39,0.04), 0 12px 30px -16px rgba(27,43,39,0.18);
+        }
+
+        .field {
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            font-size: 12.5px;
+            font-weight: 600;
+            color: var(--muted);
+            margin-bottom: 7px;
+            letter-spacing: 0.01em;
+        }
+
+        input[type="number"] {
+            width: 100%;
+            font-family: 'Inter', sans-serif;
+            font-size: 16px;
+            padding: 12px 14px;
+            border: 1.5px solid var(--line);
+            border-radius: 10px;
+            background: #fbfaf6;
+            color: var(--ink);
+            transition: border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+            -moz-appearance: textfield;
+        }
+
+        input[type="number"]:focus {
+            outline: none;
+            border-color: var(--teal);
+            background: #ffffff;
+            box-shadow: 0 0 0 3px var(--teal-soft);
+        }
+
+        input[type="number"]::placeholder {
+            color: #b8b2a0;
+        }
+
+        #find {
+            width: 100%;
+            margin-top: 6px;
+            padding: 13px 16px;
+            font-family: 'Inter', sans-serif;
+            font-size: 14.5px;
+            font-weight: 600;
+            letter-spacing: 0.01em;
+            color: #f6f3ec;
+            background: var(--teal);
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background 0.15s ease, transform 0.1s ease;
+        }
+
+        #find:hover { background: #18493f; }
+        #find:active { transform: scale(0.99); }
+        #find:focus-visible { outline: 3px solid var(--teal-soft); outline-offset: 2px; }
+
+        .result {
+            margin: 26px 0 0;
+            padding: 20px 22px;
+            background: var(--teal-soft);
+            border-radius: 14px;
+            text-align: center;
+        }
+
+        .result b {
+            display: block;
+            font-size: 11px;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            font-weight: 600;
+            color: var(--teal);
+            margin-bottom: 6px;
+        }
+
+        .result #ans {
+            font-family: 'Fraunces', serif;
+            font-size: 40px;
+            font-weight: 600;
+            color: var(--ink);
+            line-height: 1;
+        }
+
+        .result #ans:empty::after {
+            content: "—";
+            color: #b8b2a0;
+        }
+
+        .scale-label {
+            margin: 30px 2px 10px;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--muted);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            border: none;
+            background: var(--card);
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            overflow: hidden;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 12px 16px;
+            font-size: 14px;
+            border-bottom: 1px solid var(--line);
+        }
+
+        th {
+            font-size: 11px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--muted);
+            font-weight: 600;
+            background: #fbfaf6;
+        }
+
+        tr:last-child td { border-bottom: none; }
+
+        td:first-child {
+            font-variant-numeric: tabular-nums;
+            color: var(--muted);
+        }
+
+        td:last-child { font-weight: 500; }
+
+        /* dot indicator before category name, color follows row state via currentColor */
+        td:last-child::before {
+            content: "";
+            display: inline-block;
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: currentColor;
+            margin-right: 8px;
+            opacity: 0.55;
+        }
+
+        #one td:last-child { color: var(--c-under); }
+        #two td:last-child { color: var(--c-healthy); }
+        #three td:last-child { color: var(--c-over); }
+        #four td:last-child { color: var(--c-obese); }
+
+        /* smooth transition when JS toggles inline backgroundColor */
+        #one, #two, #three, #four {
+            transition: background-color 0.25s ease;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 22px;
+            font-size: 12px;
+            color: #a39d8c;
+        }
+    </style>
+</head>
+<body>
+    <div class="sheet">
+        <p class="eyebrow">Health Metrics</p>
+        <h1>BMI Calculator</h1>
+
+        <div class="card">
+            <div class="field">
+                <label for="weight">Weight (kg)</label>
+                <input type="number" id="weight" placeholder="e.g. 68">
+            </div>
+            <div class="field">
+                <label for="height">Height (m)</label>
+                <input type="number" id="height" placeholder="e.g. 1.72">
+            </div>
+
+            <button type="submit" id="find" onclick="calc()">Calculate BMI</button>
+
+            <div class="result">
+                <b>Calculated BMI</b>
+                <span id="ans"></span>
+            </div>
+        </div>
+
+        <p class="scale-label">Reference Scale</p>
+        <table border>
+            <tr>
+                <th>BMI Range</th>
+                <th>Category</th>
+            </tr>
+            <tr id="one">
+                <td>Below 18.5</td>
+                <td>Underweight</td>
+            </tr>
+            <tr id="two">
+                <td>18.5-24.9</td>
+                <td>Healthy Weight</td>
+            </tr>
+            <tr id="three">
+                <td>25.0-29.9</td>
+                <td>Overweight</td>
+            </tr>
+            <tr id="four">
+                <td>30.0 or Higher</td>
+                <td>Obese</td>
+            </tr>
+        </table>
+
+        <footer>Formula: weight (kg) ÷ height (m)</footer>
+    </div>
+
+<script>    
+    function calc(){
+        let h=document.getElementById("height").value
+        let w=document.getElementById("weight").value
+        let outp=document.getElementById("ans")
+        outp.innerText=`${w/h}`
+        let finalans=w/h;
+        if(finalans>=30.0){
+            document.getElementById("three").style.backgroundColor="white"
+            document.getElementById("two").style.backgroundColor="white"
+            document.getElementById("one").style.backgroundColor="white"
+            document.getElementById("four").style.backgroundColor="red"
+        }
+        else if(finalans>=25.0){
+            document.getElementById("four").style.backgroundColor="white"
+            document.getElementById("two").style.backgroundColor="white"
+            document.getElementById("one").style.backgroundColor="white"
+            document.getElementById("three").style.backgroundColor="yellow"
+        }
+        else if(finalans>=18.5){
+            document.getElementById("four").style.backgroundColor="white"
+            document.getElementById("three").style.backgroundColor="white"
+            document.getElementById("one").style.backgroundColor="white"
+            document.getElementById("two").style.backgroundColor="green"
+        }
+        else if(finalans<18.5){
+            document.getElementById("two").style.backgroundColor="white"
+            document.getElementById("three").style.backgroundColor="white"
+            document.getElementById("four").style.backgroundColor="white"
+            document.getElementById("one").style.backgroundColor="red"
+        }
+
+    }
+
+
+</script>
+</html>
