@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Number Guessing Game</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Crimson+Pro:ital,wght@0,600;1,500&display=swap');
+
+  :root {
+    --bg: #14171c;
+    --panel: #1c2128;
+    --paper: #e8e3d3;
+    --ink: #2b2620;
+    --accent: #d4934a;
+    --accent-dim: #8a5f2c;
+    --cold: #5b7c99;
+    --hot: #c45d44;
+    --line: #2e3440;
+    --muted: #6b7280;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    background-image:
+      radial-gradient(circle at 20% 10%, rgba(212,147,74,0.04), transparent 40%),
+      radial-gradient(circle at 80% 90%, rgba(91,124,153,0.05), transparent 40%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    font-family: 'Space Mono', monospace;
+    color: var(--paper);
+  }
+
+  .case {
+    width: 100%;
+    max-width: 480px;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  }
+
+  .case-header {
+    padding: 22px 26px 18px;
+    border-bottom: 1px dashed var(--line);
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+
+  .case-header .title {
+    font-family: 'Crimson Pro', serif;
+    font-style: italic;
+    font-weight: 600;
+    font-size: 22px;
+    color: var(--paper);
+    letter-spacing: 0.3px;
+  }
+
+  .case-header .file-no {
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 1px;
+  }
+
+  .briefing {
+    padding: 18px 26px;
+    font-size: 12px;
+    line-height: 1.7;
+    color: #9aa3ad;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .briefing b { color: var(--paper); }
+
+  /* range bar - the signature element */
+  .range-section {
+    padding: 20px 26px 4px;
+  }
+
+  .range-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+
+  .range-bar {
+    position: relative;
+    height: 10px;
+    background: var(--line);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  .range-fill {
+    position: absolute;
+    top: 0; bottom: 0;
+    left: 0%;
+    width: 100%;
+    background: linear-gradient(90deg, var(--cold), var(--accent), var(--hot));
+    transition: left 0.4s ease, right 0.4s ease;
+  }
+
+  .range-mask-left, .range-mask-right {
+    position: absolute;
+    top: 0; bottom: 0;
+    background: var(--line);
+    transition: width 0.4s ease;
+    width: 0%;
+  }
+  .range-mask-left { left: 0; }
+  .range-mask-right { right: 0; }
+
+  .input-section {
+    padding: 22px 26px;
+    display: flex;
+    gap: 10px;
+  }
+
+  #num {
+    flex: 1;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    color: var(--paper);
+    font-family: 'Space Mono', monospace;
+    font-size: 18px;
+    padding: 12px 14px;
+    border-radius: 4px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  #num:focus { border-color: var(--accent); }
+
+  #num::-webkit-inner-spin-button { opacity: 0.4; }
+
+  #submit {
+    background: var(--accent);
+    color: #1c1505;
+    border: none;
+    font-family: 'Space Mono', monospace;
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 0.5px;
+    padding: 0 22px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.15s, transform 0.1s;
+  }
+
+  #submit:hover { background: #e6a35a; }
+  #submit:active { transform: scale(0.97); }
+
+  .status-section {
+    padding: 0 26px 22px;
+  }
+
+  #output {
+    font-family: 'Crimson Pro', serif;
+    font-style: italic;
+    font-size: 16px;
+    min-height: 24px;
+    color: var(--paper);
+  }
+
+  #output.correct { color: #8fbf7a; }
+  #output.wrong { color: #c45d44; }
+
+  #guess {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 6px;
+    letter-spacing: 0.5px;
+  }
+
+  .log-section {
+    border-top: 1px dashed var(--line);
+    padding: 16px 26px 22px;
+  }
+
+  .log-title {
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    color: var(--muted);
+    margin-bottom: 10px;
+  }
+
+  #log {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    min-height: 20px;
+  }
+
+  .chip {
+    font-size: 12px;
+    padding: 4px 9px;
+    border-radius: 3px;
+    border: 1px solid var(--line);
+    color: var(--muted);
+  }
+
+  .chip.high { color: var(--hot); border-color: rgba(196,93,68,0.3); }
+  .chip.low { color: var(--cold); border-color: rgba(91,124,153,0.3); }
+
+  /* hidden element retained for game state / debugging only, not shown to player */
+  #ornum { display: none; }
+</style>
+</head>
+<body>
+
+  <div class="case">
+    <div class="case-header">
+      <span class="title">Number Guessing Game</span>
+      <span class="file-no">by Wareesha</span>
+    </div>
+
+    <div class="briefing">
+      A value is hidden somewhere between <b>1</b> and <b>100</b>.
+      You have <b id="guess-quota">10</b> attempts to find it. Every guess narrows the search.
+    </div>
+
+    <div class="range-section">
+      <div class="range-labels">
+        <span id="range-low">1</span>
+        <span id="range-high">100</span>
+      </div>
+      <div class="range-bar">
+        <div class="range-fill"></div>
+        <div class="range-mask-left" id="mask-left"></div>
+        <div class="range-mask-right" id="mask-right"></div>
+      </div>
+    </div>
+
+    <div class="input-section">
+      <input type="number" name="num" id="num" placeholder="Enter a number..." min="1" max="100">
+      <button type="submit" id="submit">Submit</button>
+    </div>
+
+    <div class="status-section">
+      <p id="output">Awaiting your first guess.</p>
+      <p id="guess"></p>
+    </div>
+
+    <div class="log-section">
+      <div class="log-title">EVIDENCE LOG</div>
+      <div id="log"></div>
+    </div>
+
+    <!-- kept for compatibility with original logic, never displayed -->
+    <p id="ornum"></p>
+  </div>
+
+<script>
+let min = 1;
+let max = 100;
+let guesses = 10;
+let mynum = Math.floor(Math.random() * (max - min + 1)) + min;
+
+// the line that revealed the answer has been removed/commented out below:
+// document.getElementById("ornum").innerHTML = mynum
+
+// track current known bounds for the visual range bar
+let knownLow = min;
+let knownHigh = max;
+
+function updateRangeBar() {
+  const totalSpan = max - min;
+  const leftPct = ((knownLow - min) / totalSpan) * 100;
+  const rightPct = ((max - knownHigh) / totalSpan) * 100;
+  document.getElementById("mask-left").style.width = leftPct + "%";
+  document.getElementById("mask-right").style.width = rightPct + "%";
+  document.getElementById("range-low").textContent = knownLow;
+  document.getElementById("range-high").textContent = knownHigh;
+}
+
+function addLogEntry(value, kind) {
+  const log = document.getElementById("log");
+  const chip = document.createElement("span");
+  chip.className = "chip " + kind;
+  chip.textContent = value;
+  log.appendChild(chip);
+}
+
+document.getElementById("submit").addEventListener("click", function() {
+    let ui = Number(document.getElementById("num").value)
+    const outputEl = document.getElementById("output");
+
+    if(guesses>1){
+        if(ui===mynum){
+            document.getElementById("guess").innerHTML=""
+            outputEl.className = "correct";
+            outputEl.innerHTML="Case closed. That's the number.<br>Resetting in a moment..."
+            addLogEntry(ui, "correct-chip");
+            setTimeout(function() {
+                location.reload();
+            }, 3000);
+        }
+        else{
+            --guesses;
+            document.getElementById("guess").innerHTML=`Guesses Remaining: ${guesses}`
+            outputEl.className = "wrong";
+
+            if (ui > mynum) {
+              outputEl.innerHTML = "Too high. Narrow it down.";
+              if (ui < knownHigh) knownHigh = ui - 1;
+              addLogEntry(ui, "high");
+            } else if (ui < mynum) {
+              outputEl.innerHTML = "Too low. Keep searching.";
+              if (ui > knownLow) knownLow = ui + 1;
+              addLogEntry(ui, "low");
+            } else {
+              outputEl.innerHTML = "Incorrect Number";
+              addLogEntry(ui, "");
+            }
+            updateRangeBar();
+        }
+    }
+    else{
+        --guesses;
+        document.getElementById("guess").innerHTML=`Guesses Remaining: ${guesses}`
+        outputEl.className = "wrong";
+        outputEl.innerHTML="Case gone cold. You're out of attempts.<br>Resetting..."
+        addLogEntry(ui, ui > mynum ? "high" : "low");
+            setTimeout(function() {
+                location.reload();
+            }, 3000);
+    }
+    document.getElementById("num").value = "";
+    document.getElementById("num").focus();
+}
+)
+
+document.getElementById("num").addEventListener("keydown", function(e) {
+  if (e.key === "Enter") {
+    document.getElementById("submit").click();
+  }
+});
+</script>
+</body>
+</html>
