@@ -1,0 +1,163 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600&display=swap');
+@import "tailwindcss";
+
+:root {
+  --bg: #15171c;
+  --card-bg: #1b1e25;
+  --accent: #f2a93c;
+  --accent-dim: #f2a93c33;
+  --text-h: #eef0f3;
+  --text-d: #8b9099;
+  --border: #2a2d35;
+  --track: #25282f;
+}
+
+.counter-page {
+  min-height: 100vh;
+  display: flex;
+  place-items: center;
+  place-content: center;
+  background: var(--bg);
+  background-image:
+    radial-gradient(circle at 50% 0%, #f2a93c14, transparent 60%);
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+.counter-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 48px 56px 40px;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  box-shadow: 0 24px 60px -20px #00000080;
+}
+
+.counter-eyebrow {
+  margin: 0;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-d);
+}
+
+.counter-title {
+  margin: 2px 0 28px;
+  font-family: "Inter", sans-serif;
+  font-weight: 700;
+  font-size: 22px;
+  letter-spacing: 0.02em;
+  color: var(--text-h);
+}
+
+.counter-dial {
+  position: relative;
+  width: 220px;
+  height: 220px;
+  display: flex;
+  place-items: center;
+  place-content: center;
+}
+
+.counter-ring {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+
+.counter-ring-track {
+  fill: none;
+  stroke: var(--track);
+  stroke-width: 10;
+}
+
+.counter-ring-fill {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 10;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.counter-readout {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.counter-value {
+  font-family: "Inter", sans-serif;
+  font-weight: 700;
+  font-size: 56px;
+  line-height: 1;
+  color: var(--text-h);
+  font-variant-numeric: tabular-nums;
+}
+
+.counter-max {
+  font-family: "Inter", sans-serif;
+  font-size: 13px;
+  color: var(--text-d);
+  letter-spacing: 0.04em;
+}
+
+.counter-controls {
+  display: flex;
+  gap: 12px;
+  margin-top: 32px;
+}
+
+.counter-btn {
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  background: var(--track);
+  color: var(--text-h);
+  font-family: "Inter", sans-serif;
+  font-size: 24px;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  place-items: center;
+  place-content: center;
+  transition: transform 0.12s ease, border-color 0.2s ease, background 0.2s ease;
+}
+
+.counter-btn:hover {
+  border-color: var(--accent);
+}
+
+.counter-btn:active {
+  transform: scale(0.93);
+}
+
+.counter-btn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.counter-btn--plus {
+  background: var(--accent-dim);
+  border-color: #f2a93c55;
+}
+
+@media (max-width: 480px) {
+  .counter-card {
+    padding: 36px 28px 32px;
+    width: 90%;
+  }
+  .counter-dial {
+    width: 180px;
+    height: 180px;
+  }
+  .counter-value {
+    font-size: 46px;
+  }
+}
