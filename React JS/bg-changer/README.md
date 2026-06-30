@@ -79,7 +79,7 @@ http://localhost:5173
 
 ## 📸 Preview
 
-> Add a screenshot or GIF of the application here.
+![Background Changer Preview](images/screenshot.png)
 
 ## 🌱 Future Improvements
 
