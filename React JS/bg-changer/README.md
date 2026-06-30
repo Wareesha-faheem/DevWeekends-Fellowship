@@ -1,16 +1,101 @@
-# React + Vite
+# 🎨 React Background Changer
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A simple React.js application that allows users to change the background color of the page by clicking different color buttons.
 
-Currently, two official plugins are available:
+## 🚀 Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- 🎨 Instantly change the background color
+- ⚛️ Built using React Functional Components
+- 🪝 Uses the `useState` hook for state management
+- 📱 Responsive and clean user interface
+- ⚡ Fast and lightweight
 
-## React Compiler
+## 🛠️ Technologies Used
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- React.js
+- JavaScript (ES6+)
+- CSS3
+- HTML5
+- Vite
 
-## Expanding the ESLint configuration
+## 📂 Folder Structure
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+```
+bg-changer/
+│── public/
+│── src/
+│   ├── assets/
+│   ├── App.jsx
+│   ├── App.css
+│   ├── index.css
+│   └── main.jsx
+│
+├── index.html
+├── package.json
+├── vite.config.js
+└── README.md
+```
+
+## ⚙️ Getting Started
+
+### Clone the repository
+
+```bash
+git clone https://github.com/Wareesha-faheem/DevWeekends-Fellowship.git
+```
+
+### Navigate to the project
+
+```bash
+cd "React JS/bg-changer"
+```
+
+### Install dependencies
+
+```bash
+npm install
+```
+
+### Run the development server
+
+```bash
+npm run dev
+```
+
+The app will be available at:
+
+```
+http://localhost:5173
+```
+
+## 📚 Concepts Practiced
+
+- React Components
+- JSX
+- useState Hook
+- Event Handling
+- Dynamic Styling
+- Conditional Rendering
+
+## 📸 Preview
+
+> Add a screenshot or GIF of the application here.
+
+## 🌱 Future Improvements
+
+- 🎲 Random Color Generator
+- 🎨 Custom Color Picker
+- 📋 Copy HEX/RGB Color Code
+- 💾 Save Favorite Colors
+- 🌙 Dark & Light Theme Toggle
+- ✨ Smooth Background Transitions
+
+## 👩‍💻 Author
+
+**Wareesha Faheem**
+
+GitHub: https://github.com/Wareesha-faheem
+
+---
+
+⭐ If you like this project, don't forget to star the repository!
