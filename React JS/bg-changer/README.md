@@ -79,7 +79,7 @@ http://localhost:5173
 
 ## 📸 Preview
 
-![Background Changer Preview](images/screenshot.png)
+![Background Changer Preview](images/screenshot.PNG)
 
 ## 🌱 Future Improvements
 
